@@ -1,5 +1,12 @@
 import 'styled-components'
+
+// CSS Property Utilities
 import { BoxShadow } from '../_types/BoxShadow'
+import { Transition } from '../_types/Transition'
+import { BoxModelStyles } from '../_types/BoxModelStyles'
+
+// Components
+import { DrawerStyles } from '../_types/components/Drawer'
 
 export interface TextStyles {
   fontFamily: string
@@ -17,24 +24,66 @@ export interface TypographyStyles extends TextStyles {
 
 export interface ButtonStyles extends TextStyles {
   outline: string
+  cursor: string
+  transition?: Transition
+  transform?: string
+  boxShadow?: BoxShadow
 }
 
-export interface BoxModelStyles {
-  maxWidth?: string
-  width?: string
-  minWidth?: string
+export interface PaletteColors {
+  value: string // The actual color value for this palette member
+  contrast: string // The contrast color for when text must be readable as the foreground of the above color value
+}
 
-  maxHeight?: string
-  height?: string
-  minHeight?: string
+export interface Palette {
+  primary: PaletteColors
+  secondary: PaletteColors
+  tertiary: PaletteColors
+  quaternary: PaletteColors
 
-  padding?: string
-  margin?: string
-  border?: string
+  disabled: PaletteColors
+
+  danger: PaletteColors
+  warning: PaletteColors
+  success: PaletteColors
+
+  background: string
+  panelBackground: string
+}
+
+export interface BoxShadowConfig {
+  default?: BoxShadow
+  defaultInset?: BoxShadow
+
+  pronounced?: BoxShadow
+  pronouncedInset?: BoxShadow
+
+  /* Because you cannot animate a box-shadow to/from 'none', you can optionally
+    provide a box-shadow with 0 x-, y-offsets, and blur- and spread-radii, and
+    a transparent color whose non-alpha values constitute an appropriate color--
+    appropriate color likely meaning what you're tweening to/from, so that an
+    inappropriate color isn't displayed as the animation executes. */
+  animatableNone?: BoxShadow
+  animatableNoneInset?: BoxShadow
+}
+
+export interface DrawerStyles {
+  handle: HandleStyles
 }
 
 declare module 'styled-components' {
+  export interface Globals {
+    palette: Palette
+    borderRadius: string
+    boxShadow: BoxShadowConfig
+  }
+
   export interface Theme {
+    // Globals
+    palette: Palette
+    borderRadius: string
+    boxShadow: BoxShadowConfig
+
     h1: TypographyStyles
     h2: TypographyStyles
     h3: TypographyStyles
@@ -56,7 +105,23 @@ declare module 'styled-components' {
         outlineColor: string
       }
     }
-    button: TextStyles & BoxModelStyles & ButtonStyles
+
+    button: TextStyles &
+      BoxModelStyles &
+      ButtonStyles & {
+        hovered: TextStyles &
+          BoxModelStyles &
+          ButtonStyles &
+          ButtonModifierStyles
+        clicked: TextStyleds &
+          BoxModelStyles &
+          ButtonStyles &
+          ButtonModifierStyles
+        disabled: TextStyles &
+          BoxModelStyles &
+          ButtonStyles &
+          ButtonModifierStyles
+      }
     ghostButton: TextStyles &
       BoxModelStyles &
       ButtonStyles & {
@@ -64,58 +129,6 @@ declare module 'styled-components' {
         borderStyle: string
       }
     textButton: TextStyles & BoxModelStyles & ButtonStyles
-    palette: {
-      primary: {
-        value: string
-        contrast: string
-      }
-      secondary: {
-        value: string
-        contrast: string
-      }
-      tertiary: {
-        value: string
-        contrast: string
-      }
-      quaternary: {
-        value: string
-        contrast: string
-      }
-
-      disabled: {
-        value: string
-        contrast: string
-      }
-
-      danger: {
-        value: string
-        contrast: string
-      }
-      warning: {
-        value: string
-        contrast: string
-      }
-      success: {
-        value: string
-        contrast: string
-      }
-
-      background: string
-      componentBackground: string
-
-      // TODO: Collapse into background and componentBackground when capability to switch themes
-      backgroundDark?: string
-      componentBackgroundDark?: string
-    }
-
-    borderRadius: string
-
-    boxShadow: {
-      default: BoxShadow[]
-      defaultInset: BoxShadow[]
-
-      pronounced: BoxShadow[]
-      pronouncedInset: BoxShadow[]
-    }
+    drawer: DrawerStyles
   }
 }

@@ -1,4 +1,4 @@
-export interface BoxShadow {
+interface IndividualBoxShadow {
   xOffset: string
   yOffset: string
   blurRadius?: string
@@ -6,3 +6,10 @@ export interface BoxShadow {
   color: string
   inset?: boolean
 }
+
+export type BoxShadow =
+  | IndividualBoxShadow[]
+  | 'none'
+  | 'inherit'
+  | 'initial'
+  | 'unset'

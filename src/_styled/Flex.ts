@@ -10,7 +10,11 @@ type FlexItemBehavior =
 
 interface Props {
   column?: boolean
-  flexDirection?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
+  flexDirection?:
+    | 'row'
+    | 'column'
+    | 'row-reverse'
+    | 'column-reverse'
   justifyContent?: FlexItemBehavior
   alignItems?: FlexItemBehavior
   width?: string // css value
@@ -21,7 +25,12 @@ interface Props {
   minHeight?: string // css value
   margin?: string // css value
   padding?: string // css value
-  position?: 'absolute' | 'relative' | 'static' | 'fixed' | 'sticky'
+  position?:
+    | 'absolute'
+    | 'relative'
+    | 'static'
+    | 'fixed'
+    | 'sticky'
   zIndex?: number
   gridArea?: string
 }

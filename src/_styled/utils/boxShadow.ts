@@ -1,8 +1,12 @@
 import { BoxShadow } from '../../_types/BoxShadow'
 
-export const getCSSForBoxShadow = (shadows: BoxShadow[]) => {
-  if (shadows.length === 0) return 'none'
-  return shadows.reduce(
+export const getCSSForBoxShadow = (shadow?: BoxShadow) => {
+  if (!shadow || shadow.length === 0) return 'none'
+
+  // Bail if value is 'none' | 'initial' | 'unset' | 'inherit'
+  if (typeof shadow === 'string') return shadow
+
+  return shadow.reduce(
     (
       acc,
       { xOffset, yOffset, blurRadius, spreadRadius, color, inset },
